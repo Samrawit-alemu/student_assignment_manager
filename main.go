@@ -15,6 +15,14 @@ func main() {
 	config.ConnectDB()
 
 	authHandler := handler.NewAuthHandler(usecase.NewAuthUsecase(&repository.UserRepository{}))
+	assignmentHandler := handler.NewAssignmentHandler(
+		usecase.NewAssignmentUsecase(&repository.AssignmentRepository{}),
+	)
+
+	r.POST("/assignments", assignmentHandler.Create)
+	r.GET("/assignments/:userID", assignmentHandler.GetByUser)
+	r.PUT("/assignments/:id/done", assignmentHandler.UpdateDone)
+	r.DELETE("/assignments/:id", assignmentHandler.Delete)
 
 	// r.GET("/", func(c *gin.Context) {
 	// 	c.JSON(200, gin.H{"message": "Welcome to Student Assignment Manager API 🚀"})
