@@ -1,0 +1,12 @@
+# Go
+bin/
+*.exe
+*.log
+*.out
+
+# Dependencies
+vendor/
+go.sum
+
+# Environment files
+.env
