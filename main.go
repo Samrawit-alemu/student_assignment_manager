@@ -2,6 +2,9 @@ package main
 
 import (
 	"student_assignment_management/config"
+	"student_assignment_management/handler"
+	"student_assignment_management/repository"
+	"student_assignment_management/usecase"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,9 +14,14 @@ func main() {
 
 	config.ConnectDB()
 
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "Welcome to Student Assignment Manager API 🚀"})
-	})
+	authHandler := handler.NewAuthHandler(usecase.NewAuthUsecase(&repository.UserRepository{}))
+
+	// r.GET("/", func(c *gin.Context) {
+	// 	c.JSON(200, gin.H{"message": "Welcome to Student Assignment Manager API 🚀"})
+	// })
+
+	r.POST("/register", authHandler.Register)
+	r.POST("login", authHandler.Login)
 
 	r.Run(":8080")
 }
